@@ -1,10 +1,11 @@
 import org.jetbrains.kotlin.konan.properties.Properties
 import java.io.FileInputStream
 
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.compose)
 }
 val appProperties = Properties().apply { load(FileInputStream(rootProject.file("app.properties"))) }
 
@@ -26,16 +27,16 @@ android {
 
     defaultConfig {
         applicationId = "com.tv.upload"
-        minSdk = 34
-        targetSdk = 36
-        versionCode = 5
+        minSdk = 28
+        targetSdk = 34
+        versionCode = 7
         versionName = "1.0"
         vectorDrawables {
             useSupportLibrary = true
         }
-        ndk {
-            abiFilters.add("armeabi-v7a")
-        }
+//        ndk {
+//            abiFilters.add("armeabi-v7a")
+//        }
     }
     packaging {
         resources {
@@ -55,15 +56,22 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+    java {
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
+        }
     }
-    kotlinOptions {
-        jvmTarget = "21"
+    kotlin {
+        compilerOptions {
+            optIn.add("21")
+        }
+        composeOptions {
+            kotlinCompilerExtensionVersion = "2.2.20"
+        }
     }
     buildFeatures {
-        viewBinding = true
+        compose = true
     }
 }
 
@@ -72,10 +80,10 @@ dependencies {
     implementation(libs.bundles.ktor.server)
 
     // AndroidX 和其他库
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.ui.tooling.preview.android)
+    implementation(libs.androidx.tv.material)
+    implementation(libs.androidx.tv.foundation)
 }

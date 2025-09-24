@@ -1,3 +1,4 @@
+@file:Suppress("UnstableApiUsage")
 pluginManagement {
     repositories {
         maven {
@@ -18,14 +19,6 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         mavenLocal()
-        maven {
-            name = "Aliyun central"
-            url = uri("https://maven.aliyun.com/repository/central/")
-        }
-        maven {
-            name = "Aliyun google"
-            url = uri("https://maven.aliyun.com/repository/google/")
-        }
         maven {
             name = "Aliyun public"
             url = uri("https://maven.aliyun.com/repository/public/")
