@@ -27,16 +27,16 @@ android {
 
     defaultConfig {
         applicationId = "com.tv.upload"
-        minSdk = 28
+        minSdk = 34
         targetSdk = 34
         versionCode = 7
         versionName = "1.0"
         vectorDrawables {
             useSupportLibrary = true
         }
-//        ndk {
-//            abiFilters.add("armeabi-v7a")
-//        }
+        ndk {
+            abiFilters.add("armeabi-v7a")
+        }
     }
     packaging {
         resources {
