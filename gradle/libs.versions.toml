@@ -8,7 +8,7 @@ ktorServerResources = "3.3.0"
 lifecycleRuntimeKtx = "2.9.4"
 tvMaterial = "1.1.0-alpha01"
 tvFoundation = "1.0.0-alpha12"
-composeBom = "2025.09.00"
+composeBom = "2025.09.01"
 activity-compose = "1.11.0"
 
 [libraries]
@@ -22,8 +22,6 @@ ktor-server-resources = { module = "io.ktor:ktor-server-resources", version.ref 
 androidx-tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tvMaterial" }
 androidx-tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tvFoundation" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-
-
 
 [bundles]
 ktor-server = [

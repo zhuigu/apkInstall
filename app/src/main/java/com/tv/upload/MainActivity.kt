@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.addCallback
@@ -39,8 +38,6 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.tv.material3.Button
 import androidx.tv.material3.Icon
-import androidx.tv.material3.IconButtonDefaults
-import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Surface
 import androidx.tv.material3.Text
 import com.tv.upload.theme.AppTheme
@@ -114,7 +111,11 @@ class MainActivity : ComponentActivity() {
             isServerRunning = true
             currentIpAddress = getLocalIpAddress()
         } catch (e: Exception) {
-            Log.e(TAG, "服务启动失败", e)
+            Toast.makeText(
+                this,
+                getString(R.string.server_start_failed, e.message),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -144,7 +145,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         } catch (e: SocketException) {
-            Log.e(TAG, "Error getting local IP address", e)
+            Toast.makeText(this, getString(R.string.ip_address_failed), Toast.LENGTH_LONG).show()
         }
         return null
     }
@@ -152,27 +153,31 @@ class MainActivity : ComponentActivity() {
     // 显示删除对话框的辅助函数
     private fun showDeleteDialog(context: Context, file: File) {
         val dialogBuilder = AlertDialog.Builder(context)
-        dialogBuilder.setTitle("删除安装包？").setMessage("安装包将被删除。")
-            .setPositiveButton("删除") { _, _ ->
+        dialogBuilder
+            .setTitle(getString(R.string.delete_apk))
+            .setMessage(getString(R.string.delete_apk_future))
+            .setPositiveButton(getString(R.string.delete)) { _, _ ->
                 if (file.delete()) {
-                    Toast.makeText(context, "删除成功。", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.delete_success), Toast.LENGTH_LONG)
+                        .show()
                 } else {
-                    Toast.makeText(context, "删除失败。", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.delete_error), Toast.LENGTH_LONG)
+                        .show()
                 }
-            }.setNegativeButton("保留") { dialog, _ ->
+            }.setNegativeButton(getString(R.string.saved)) { dialog, _ ->
                 dialog.dismiss()
             }.show()
     }
 
     private fun showExitConfirmationDialog() {
         val dialogBuilder = AlertDialog.Builder(this, R.style.RoundedCornersDialog)
-            .setTitle("退出应用？")
-            .setMessage("确定要退出应用并停止服务器吗？")
-            .setPositiveButton("退出") { dialog, which ->
+            .setTitle(getString(R.string.exit_app))
+            .setMessage(getString(R.string.confirm_exit_app))
+            .setPositiveButton(getString(R.string.exit)) { dialog, which ->
                 stopServer()
                 finish()
             }
-            .setNegativeButton("取消") { dialog, which ->
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
                 dialog.dismiss()
             }
         val dialog = dialogBuilder.create()
@@ -218,9 +223,10 @@ fun TvUploadApp(
                     text = stringResource(R.string.server_address),
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = ipAddress?.let { "http://$it:$serverPort" } ?: stringResource(
-                    R.string.network_not_connected
-                ))
+                Text(text = ipAddress?.let { stringResource(R.string.ip_address, it, serverPort) }
+                    ?: stringResource(
+                        R.string.network_not_connected
+                    ))
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     horizontalArrangement = Arrangement.Center,

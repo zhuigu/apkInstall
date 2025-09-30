@@ -2,10 +2,21 @@
     <string name="app_name">TV Upload</string>
     <string name="status_running">状态: 运行中</string>
     <string name="stop_server">停止服务</string>
-    <string name="server_start_failed">服务启动失败: %1$s</string>
     <string name="status_stopped">状态: 停止</string>
     <string name="start_server">启动服务</string>
+    <string name="server_start_failed">服务启动失败: %1$s</string>
     <string name="network_not_connected">网络未连接。</string>
-    <string name="loading">加载中…</string>
     <string name="server_address">服务器地址</string>
+    <string name="ip_address_failed">获取IPv4地址失败</string>
+    <string name="ip_address">http://%1$s:%2$s</string>
+    <string name="delete">删除</string>
+    <string name="delete_success">删除成功。</string>
+    <string name="delete_error">删除失败。</string>
+    <string name="delete_apk">删除安装包？</string>
+    <string name="delete_apk_future">安装包将被删除。</string>
+    <string name="saved">保留</string>
+    <string name="exit_app">退出应用？</string>
+    <string name="confirm_exit_app">确定要退出应用并停止服务器吗？</string>
+    <string name="exit">退出</string>
+    <string name="cancel">取消</string>
 </resources>
