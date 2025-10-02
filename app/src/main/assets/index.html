@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>APK 安装器</title>
+    <style>
+      :root{--primary-color:#4caf50;--secondary-color:#f0f0f0;--border-radius:8px;--box-shadow:0 4px 12px rgba(0,0,0,.1)}
+      body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#e9ecef;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;color:#333;padding:20px;box-sizing:border-box}
+      .container{background-color:#fff;padding:40px;border-radius:var(--border-radius);box-shadow:var(--box-shadow);text-align:center;max-width:500px;width:100%}
+      h1{color:var(--primary-color);margin-bottom:20px;font-size:2em}
+      .upload-area{border:2px dashed #ccc;border-radius:var(--border-radius);padding:30px;margin-bottom:20px;cursor:pointer;transition:border-color .3s ease,background-color .3s ease}
+      .upload-area:hover,.upload-area.drag-over{border-color:var(--primary-color);background-color:#f8f9fa}
+      .upload-area p{margin:0;color:#666;pointer-events:none}
+      .upload-area .upload-icon{font-size:3rem;color:var(--primary-color);margin-bottom:10px;display:block}
+      #apkFile{display:none}
+      .btn{background-color:var(--primary-color);color:#fff;border:none;padding:12px 24px;font-size:16px;border-radius:var(--border-radius);cursor:pointer;transition:background-color .3s ease,transform .2s ease;width:100%;box-sizing:border-box}
+      .btn:hover{background-color:#43a047;transform:translateY(-2px)}
+      .status-message{margin-top:20px;font-weight:700;min-height:20px;text-align:left;font-size:.9em}
+      .progress-container{width:100%;background-color:var(--secondary-color);border-radius:var(--border-radius);margin-top:20px;overflow:hidden}
+      .progress-bar-fill{height:25px;width:0;background-color:var(--primary-color);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;transition:width .4s ease-in-out}
+      @media (max-width:600px){.container{padding:20px}h1{font-size:1.5em}.upload-area{padding:20px}}
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>APK 安装器</h1>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="apkFile" id="apkFile" accept=".apk" />
+        <div class="upload-area" id="uploadArea">
+          <p>点击此处选择 APK 文件，或将文件拖拽至此</p>
+        </div>
+        <button type="submit" class="btn">开始上传</button>
+      </form>
+      <div class="status-message" id="status"></div>
+      <div class="progress-container">
+        <div class="progress-bar-fill" id="progressBarFill">0%</div>
+      </div>
+    </div>
+    <script>
+      const form=document.getElementById("uploadForm"),fileInput=document.getElementById("apkFile"),uploadArea=document.getElementById("uploadArea"),progressBarFill=document.getElementById("progressBarFill"),statusDiv=document.getElementById("status"),rootStyles=getComputedStyle(document.documentElement),primaryColor=rootStyles.getPropertyValue("--primary-color").trim();uploadArea.addEventListener("click",()=>{fileInput.click()});fileInput.addEventListener("change",()=>{if(fileInput.files.length>0){uploadArea.querySelector("p").textContent=`已选择文件: ${fileInput.files[0].name}`}else{uploadArea.querySelector("p").textContent="点击此处选择 APK 文件，或将文件拖拽至此"}});form.addEventListener("submit",function(e){e.preventDefault();const file=fileInput.files[0];if(!file){statusDiv.textContent="请先选择一个 APK 文件。";statusDiv.style.color="red";return}const formData=new FormData();formData.append("apkFile",file);statusDiv.textContent="正在上传...";statusDiv.style.color="#333";const xhr=new XMLHttpRequest();xhr.open("POST","/upload",!0);xhr.upload.addEventListener("progress",function(e){if(e.lengthComputable){const t=(e.loaded/e.total)*100,s=t.toFixed(2);progressBarFill.style.width=s+"%";progressBarFill.textContent=s+"%"}});xhr.addEventListener("load",function(){if(xhr.status===200){statusDiv.textContent="上传成功！✅";statusDiv.style.color=primaryColor;fileInput.value="";uploadArea.querySelector("p").textContent="点击此处选择 APK 文件，或将文件拖拽至此"}else{statusDiv.textContent=`上传失败。错误码: ${xhr.status}`;statusDiv.style.color="red"}});xhr.addEventListener("error",function(){statusDiv.textContent="网络错误，上传失败。";statusDiv.style.color="red"});xhr.send(formData)});
+    </script>
+  </body>
+</html>

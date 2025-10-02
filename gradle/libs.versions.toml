@@ -1,0 +1,39 @@
+[versions]
+agp = "8.13.0"
+ksp = "2.2.20-2.0.3"
+compose-compiler = "2.2.20"
+kotlin = "2.2.20"
+ktorServerCore = "3.3.0"
+ktorServerResources = "3.3.0"
+lifecycleRuntimeKtx = "2.9.4"
+tvMaterial = "1.1.0-alpha01"
+tvFoundation = "1.0.0-alpha12"
+composeBom = "2025.09.01"
+activity-compose = "1.11.0"
+
+[libraries]
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorServerCore" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktorServerCore" }
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktorServerCore" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktorServerCore" }
+ktor-server-resources = { module = "io.ktor:ktor-server-resources", version.ref = "ktorServerResources" }
+androidx-tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tvMaterial" }
+androidx-tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tvFoundation" }
+lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+
+[bundles]
+ktor-server = [
+    "ktor-serialization-kotlinx-json",
+    "ktor-server-content-negotiation",
+    "ktor-server-core",
+    "ktor-server-netty",
+    "ktor-server-resources",
+]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "compose-compiler" }
